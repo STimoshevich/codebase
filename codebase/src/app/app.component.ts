@@ -1,51 +1,65 @@
-import { Component } from '@angular/core';
+import {
+  Component, createComponent,
+  DestroyRef,
+  Directive, EnvironmentInjector,
+  inject,
+  Injectable,
+  InjectionToken,
+  Input, Type,
+  ViewEncapsulation
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {AsyncPipe} from "@angular/common";
+import {LazyComponentComponent} from "./lazy-component/lazy-component.component";
 
-function hello(whom: string) {
-  // @ts-ignore
-  console.log(this)
-  console.log(`Hello, ${whom}!`)
+const MAP = new InjectionToken('', {
+  factory: () => {
+    const map = new Map();
+
+    inject(DestroyRef).onDestroy(() =>
+      map.forEach((component) => component.destroy())
+    );
+
+    return map;
+  }
+});
+
+export function withStyles(component: Type<unknown>) {
+  const map = inject(MAP);
+  const environmentInjector = inject(EnvironmentInjector);
+
+  if (!map.has(component)) {
+    map.set(component, createComponent(component, {environmentInjector}));
+  }
 }
 
-hello('World')
+@Component({
+  standalone: true,
+  template: '<h1>!!!!</h1>',
+  styles: '[myDir]:hover { color: red; background: yellow }',
+  encapsulation: ViewEncapsulation.None,
+})
+class MyDirStyles {}
 
-function test(this: unknown) {
-  console.log(this)
+@Directive({
+  standalone: true,
+  selector: '[myDir]',
+})
+export class MyDir {
 }
-
-
-function User() {
-  // Происходит неявно:
-  // this = {};
-
-  // @ts-ignore
-  this.name = 'Alex'
-
-  // Происходит неявно:
-  // return this;
-}
-
-const animal = {
-  eats: true
-};
-const rabbit = {
-  jumps: true,
-  __proto__: animal
-};
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, AsyncPipe, MyDir, LazyComponentComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+
 })
 export class AppComponent {
   title = 'codebase';
-  constructor() {
-    console.log(rabbit.jumps); // true
-    // @ts-ignore
-    console.log(rabbit.eats); // true
-  }
+  protected readonly nothing = withStyles(MyDirStyles);
+
+
 }

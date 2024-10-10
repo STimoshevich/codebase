@@ -1,1 +1,11 @@
-<p>lazy-component works!</p>
+<button (click)="create()">Add</button>
+
+@for (item of items; track $index) {
+  <div class="rectangle" [class.selected]="isSelected(item.id)" [style.border]="isSelected(item.id) ? '2px solid ' + item.borderColor : 'transparent'" (click)="select(item)" [style.background-color]="item.color" cdkDrag [cdkDragStartDelay]="150" >
+      {{getId(item.id)}}
+    @if (item.node.childOf?.id) {
+      childOf =>{{item.node.childOf?.id}}
+    }
+  </div>
+}
+

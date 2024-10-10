@@ -1,0 +1,15 @@
+:host {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.rectangle {
+  height: 100px;
+  width: 100px;
+
+  &.selected {
+    border: 1px solid ;
+  }
+}
