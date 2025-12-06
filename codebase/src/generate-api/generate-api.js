@@ -157,10 +157,10 @@ function generateImports(usedTypes, modelNames, enumNames, modelsPath, enumsPath
     const modelImports = [...usedTypes].filter(type => modelNames.includes(type));
     const enumImports = [...usedTypes].filter(type => enumNames.includes(type));
 
-    if (modelImports.length > 0) {
+    if (modelImports.length) {
         imports.push(`import { ${modelImports.join(", ")} } from '${modelsPath}';`);
     }
-    if (enumImports.length > 0) {
+    if (enumImports.length) {
         imports.push(`import { ${enumImports.join(", ")} } from '${enumsPath}';`);
     }
 
