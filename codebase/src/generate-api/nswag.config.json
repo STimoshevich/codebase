@@ -1,0 +1,26 @@
+{
+  "runtime": "Default",
+  "codeGenerators": {
+    "openApiToTypeScriptClient": {
+      "output": "src/app/api/common.ts",
+      "className": "{controller}ApiService",
+      "generateDtoTypes": true,
+      "generateSeparateModels": true,
+      "template": "Angular",
+      "httpClient": "HttpClient",
+      "useRxJS6": true,
+      "generateClientClasses": true,
+      "typeStyle": "Interface",
+      "requiresExceptionClass": false,
+      "generateOptionalPropertiesAsNullable": true,
+
+      "templateDirectory": "./templates"
+    }
+  },
+  "documentGenerator": {
+    "aspNetCoreToOpenApi": {
+      "project": "/Users/s.timoshevich/RiderProjects/Test/Test/Test.csproj",
+      "aspNetCoreEnvironment": "Development"
+    }
+  }
+}

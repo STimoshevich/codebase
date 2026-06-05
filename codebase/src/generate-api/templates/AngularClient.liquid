@@ -1,0 +1,23 @@
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { InterceptorsOptionsTest } from '../interseptor-options';
+import { AppHttpContextTest } from '../app-http-context';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class {{ Class }} {
+    protected httpClient = inject(HttpClient);
+
+    {% for operation in Operations -%}
+  {{ operation.ActualOperationName }}({% for parameter in operation.Parameters %}{{ parameter.VariableName }}{% if GenerateOptionalParameters and parameter.IsOptional %}?{% endif %}: {{ parameter.Type }}{{ parameter.TypePostfix }}{% if parameter.IsLast == false%}, {% endif %}{% endfor %}{% if operation.Parameters.size > 0%}, {% endif %}interceptorOptions?: InterceptorsOptionsTest, options?: Omit<Parameters<typeof this.httpClient['{{ operation.HttpMethod }}']>[1], 'context'>): Observable<{{ operation.ResultType }}> {
+    {%-    if operation.HasBody -%}
+        {% template Client.RequestBody %}
+
+    {%-    endif -%}
+        return this.httpClient.{{ operation.HttpMethod }}<{{ operation.ResultType }}>(`{{ operation.Path }}`{% if operation.HasBody%}, content_ {% endif %}, {...options, context: new AppHttpContextTest(interceptorOptions)});
+    }
+
+  {% endfor -%}
+}

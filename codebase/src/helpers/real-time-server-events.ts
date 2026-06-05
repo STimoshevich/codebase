@@ -18,6 +18,7 @@ export class RealTimeServerEventsService implements OnDestroy {
   constructor(private _authService: OAuthService) {
     this._notificationsHubConnection = new HubConnectionBuilder()
       .withUrl(`${env.ApisDefaultUri}/real-time-notifications`, {
+        //set endpoint url
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
         accessTokenFactory: () => this._authService.getAccessToken(),

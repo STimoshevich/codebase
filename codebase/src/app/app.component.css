@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: bisque;
+}
+
+::ng-deep html {
+  height: 100%;
+}
+
+::ng-deep body {
+  height: 100%;
+}
